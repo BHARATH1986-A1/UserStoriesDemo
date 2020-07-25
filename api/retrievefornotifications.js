@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Op } = require('sequelize');
 const retrieveUserForNotyValidate = require('../validators/retrieveuserfornotification');
-const db = require('../sqlcon')
+const db = require('../sqlcon');
 
 const { or, eq } = Op;
 
@@ -22,20 +22,27 @@ module.exports = async function retrievefornotifications(ctx) {
   }
 
   let emails = extractEmails(body.notification);
-  const team = await db.teamModel.findOne({
-    where: {
-      groupnumber: body.team
-    },
-    include: [{
-      model: db.userModel,
-      as: 'users',
-      attributes: ['email'],
+  let teamparsed = {};
+  if (body.team) {
+    const team = await db.teamModel.findOne({
       where: {
-        isdeleted: false
-      }
-    }]
-  });
-  const teamparsed = team.toJSON();
+        groupnumber: body.team
+      },
+      include: [{
+        model: db.userModel,
+        as: 'users',
+        attributes: ['email'],
+        required: false,
+        where: {
+          isdeleted: false
+        }
+      }]
+    });
+    if (!team) {
+      throw new Error('Invalid teamid');
+    }
+    teamparsed = team.toJSON();
+  }
 
   if (!emails) {
     emails = [];

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const suspenduserValidate = require('../validators/suspenduser');
-const db = require('../sqlcon')
+const db = require('../sqlcon');
 
 module.exports = async function suspendUser(ctx) {
   const val = suspenduserValidate(ctx.request.body);

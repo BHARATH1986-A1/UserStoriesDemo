@@ -1,7 +1,8 @@
 const _ = require('lodash');
 const { Op } = require('sequelize');
 const reguserValidate = require('../validators/registeruser');
-const db = require('../sqlcon')
+const db = require('../sqlcon');
+
 const { or, eq } = Op;
 
 module.exports = async function registeruser(ctx) {
@@ -22,10 +23,20 @@ module.exports = async function registeruser(ctx) {
     where: {
       [or]: usersForWhere
     },
-    attributes: ['id'],
+    attributes: ['id', 'email'],
   });
 
   if (usrs && usrs.length > 0) {
+    const invalidUsers = [];
+    if (usrs.length !== post.users) {
+      const validUsers = _.map(usrs, (obj) => (obj.toJSON().email));
+      _.each(post.users, (user) => {
+        if (!_.includes(validUsers, user)) {
+          invalidUsers.push(user);
+        }
+      });
+    }
+
     const uteam = _.map(usrs, (obj) => (obj.toJSON().id));
 
     const team = await db.teamModel.findOne({
@@ -40,7 +51,13 @@ module.exports = async function registeruser(ctx) {
       throw new Error('Invalid teamid.');
     }
 
-    ctx.response.status = 204;
+    if (invalidUsers.length > 0) {
+      ctx.response.body = JSON.stringify({ message: `${_.join(invalidUsers, ', ')} does not exist. Rest are registered.` });
+      ctx.response.status = 200;
+    } else {
+      ctx.response.status = 204;
+    }
+
     //  ctx.response.body = JSON.stringify({ message: 'successfully registered.' });
   } else {
     throw new Error('Passed in users are not valid.');

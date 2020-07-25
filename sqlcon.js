@@ -17,7 +17,8 @@ const userphotoModel = sequelize.define('userphoto', userphoto);
 
 userModel.belongsToMany(teamModel, { as: 'teams', through: 'userteam' });
 teamModel.belongsToMany(userModel, { as: 'users', through: 'userteam' });
-userphotoModel.belongsTo(userModel, { as: 'User', foreignKey: 'userid' });
+userModel.hasOne(userphotoModel, { as: 'userPhoto', foreignKey: 'userid' });
+userphotoModel.belongsTo(userModel, { as: 'user', foreignKey: 'userid' });
 
 module.exports = {
   sequelize,

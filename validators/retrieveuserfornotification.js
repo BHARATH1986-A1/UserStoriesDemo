@@ -7,6 +7,7 @@ const schema = {
     team: { type: 'number' },
     notification: { type: 'string' }
   },
-  required: ['team', 'notification']
+  required: ['notification'],
+  additionalProperties: false
 };
 module.exports = (jsonInstance) => (validateJson.validate(jsonInstance, schema));

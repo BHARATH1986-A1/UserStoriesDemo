@@ -6,6 +6,7 @@ const schema = {
   properties: {
     userid: { type: 'string' }
   },
-  required: ['userid']
+  required: ['userid'],
+  additionalProperties: false
 };
 module.exports = (jsonInstance) => (validateJson.validate(jsonInstance, schema));

@@ -13,6 +13,7 @@ const vschema = {
       }
     }
   },
-  required: ['teamid', 'users']
+  required: ['teamid', 'users'],
+  additionalProperties: false
 };
 module.exports = (jsonInstance) => (validateJson.validate(jsonInstance, vschema));

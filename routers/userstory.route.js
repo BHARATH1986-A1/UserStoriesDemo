@@ -3,6 +3,7 @@ const registeruser = require('../api/registeruser');
 const uploadphoto = require('../api/uploadphoto');
 const suspendUser = require('../api/suspenduser');
 const retrievefornotifications = require('../api/retrievefornotifications');
+
 module.exports = (app) => {
   router
     //  .get('/api', list)
@@ -13,4 +14,4 @@ module.exports = (app) => {
     .post('/api/user/retrievefornotifications', retrievefornotifications);
 
   app.use(router.routes());
-}
+};
