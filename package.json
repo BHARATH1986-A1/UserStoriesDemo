@@ -1,0 +1,42 @@
+{
+  "name": "cts-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js",
+    "start": "nodemon",
+    "lint": "eslint ."
+  },
+  "author": "Bharath",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/router": "^9.3.1",
+    "jsonschema": "^1.2.6",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "lodash": "^4.17.19",
+    "mocha": "^8.0.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.3.3",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules"
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 4000
+    }
+  }
+}
