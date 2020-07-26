@@ -16,7 +16,7 @@ module.exports = async function uploadphoto(ctx) {
 
   const user = await db.userModel.findOne({
     where: {
-      id: body.userid
+      email: body.userid
     }
   });
   if (user) {

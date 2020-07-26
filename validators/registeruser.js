@@ -1,4 +1,7 @@
 const { Validator } = require('jsonschema');
+const util = require('../utils/util');
+
+Validator.prototype.customFormats.emailFormat = (input) => (util.emailValidate(input));
 
 const validateJson = new Validator();
 const vschema = {
@@ -9,7 +12,8 @@ const vschema = {
       type: 'array',
       minItems: 1,
       items: {
-        type: 'string'
+        type: 'string',
+        format: 'emailFormat'
       }
     }
   },
