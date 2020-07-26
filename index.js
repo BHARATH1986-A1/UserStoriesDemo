@@ -20,11 +20,12 @@ app.use(koaBody());
 
 (async () => {
   await db.sequelize.sync({
-    //  force: true 
+    //  force: true
   });
   const myArgs = process.argv.slice(2);
   if (myArgs && myArgs[0] === 'init') {
-    seed.insert();  //should be running this only for the initial run
+    //  should be running this only for the initial run
+    seed.insert();
   }
   userRouter(app);
   app.listen(process.env.PORT || 3300, () => {

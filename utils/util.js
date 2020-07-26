@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 module.exports = {
   createErrorMsg: (status, msg) => {
     const e = new Error(msg);
@@ -8,9 +9,9 @@ module.exports = {
   emailValidate: (text) => {
     if (text) {
       if (typeof text === 'string') {
-        return text.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+        return text.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
       }
     }
     return false;
   }
-}
+};
