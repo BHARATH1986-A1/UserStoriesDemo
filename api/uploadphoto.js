@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const uploadPhotoValidate = require('../validators/uploadphoto');
 const db = require('../sqlcon');
+const util = require('../utils/util');
 
 module.exports = async function uploadphoto(ctx) {
   const { body } = ctx.request;
@@ -10,9 +11,7 @@ module.exports = async function uploadphoto(ctx) {
   if (!val.valid) {
     //  console.log(val);
     const ers = _.map(val.errors, (err) => (err.stack));
-    const e = new Error(JSON.stringify(ers));
-    e.status = 400;
-    throw e;
+    throw util.createErrorMsg(400, JSON.stringify(ers));
   }
 
   const user = await db.userModel.findOne({
@@ -31,12 +30,12 @@ module.exports = async function uploadphoto(ctx) {
         ctx.response.status = 200;
         ctx.response.body = JSON.stringify({ message: 'successfully uploaded.' });
       } else {
-        throw new Error('Error while creating a photo');
+        throw util.createErrorMsg(500, 'Error while creating a photo');
       }
     } else {
-      throw new Error('Error while creating a photo');
+      throw util.createErrorMsg(500, 'Error while creating a photo');
     }
   } else {
-    throw new Error('User doesn\'t exist');
+    throw util.createErrorMsg(400, 'User doesn\'t exist');
   }
 };

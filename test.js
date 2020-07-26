@@ -6,14 +6,14 @@ const db = require('./sqlcon');
 const server = app.listen();
 const request = supertest.agent(server);
 
-describe('API test', function () {
-  before(function (done) {
-    app.on('appStarted', function () {
+describe('API test', () => {
+  before((done) => {
+    app.on('appStarted', () => {
       done();
     });
   });
 
-  after(function (done) {
+  after((done) => {
     console.log('server is closing');
     (async () => {
       await db.sequelize.close();
@@ -27,8 +27,8 @@ describe('API test', function () {
   const reg = {
     teamid: 1,
     users: [
-      'panugantivbharathi@gmail.com',
-      'panugantivbharathi2@gmail.com'
+      'placerat@rutrummagna.edu',
+      'auctor@diamdictumsapien.org'
     ]
   };
 
@@ -49,7 +49,7 @@ describe('API test', function () {
   });
 
   const sampdat = {
-    userid: 'panugantivbharathi2@gmail.com'
+    userid: 'auctor@diamdictumsapien.org'
   };
 
   describe('POST /api/user/suspend', () => {
@@ -76,8 +76,8 @@ describe('API test', function () {
     notification: 'Hello users! @panugantivbharathi2@gmail.com, @user-sample1@example.com, @user-sample2@example.com'
   };
 
-  describe('POST /api/user/retrievefornotifications', function () {
-    it('should return 200 when successfully give the list', function (done) {
+  describe('POST /api/user/retrievefornotifications', () => {
+    it('should return 200 when successfully give the list', (done) => {
       request
         .post('/api/user/retrievefornotifications')
         .send(sampdataretrievenoty)
@@ -97,6 +97,11 @@ describe('API test', function () {
     photo: 'ads'
   };
 
+  const up2 = {
+    userid: 2,
+    photo: 'uuLMhh=='
+  };
+
   describe('POST /api/user/upload-photo', () => {
     it('should return 400 when the base64 string is invalid', (done) => {
       request
@@ -104,7 +109,6 @@ describe('API test', function () {
         .send(up)
         .end((err, res) => {
           if (err) {
-            //res.status.should.be.eql(404);
             done(err);
           } else {
             res.status.should.be.eql(400);
@@ -112,6 +116,19 @@ describe('API test', function () {
           }
         });
     });
-  });
 
+    it('should return 200 when the request is successful', (done) => {
+      request
+        .post('/api/user/upload-photo')
+        .send(up2)
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          } else {
+            res.status.should.be.eql(200);
+            done();
+          }
+        });
+    });
+  });
 });

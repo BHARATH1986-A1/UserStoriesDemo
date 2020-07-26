@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha test.js",
     "start": "nodemon",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "initusers": "node index.js init"
   },
   "author": "Bharath",
   "license": "ISC",

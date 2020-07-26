@@ -2,12 +2,9 @@ const _ = require('lodash');
 const { Op } = require('sequelize');
 const retrieveUserForNotyValidate = require('../validators/retrieveuserfornotification');
 const db = require('../sqlcon');
+const util = require('../utils/util');
 
 const { or, eq } = Op;
-
-function extractEmails(text) {
-  return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
-}
 
 module.exports = async function retrievefornotifications(ctx) {
   const { body } = ctx.request;
@@ -16,12 +13,10 @@ module.exports = async function retrievefornotifications(ctx) {
   if (!val.valid) {
     //  console.log(val);
     const ers = _.map(val.errors, (err) => (err.stack));
-    const e = new Error(JSON.stringify(ers));
-    e.status = 400;
-    throw e;
+    throw util.createErrorMsg(400, JSON.stringify(ers));
   }
 
-  let emails = extractEmails(body.notification);
+  let emails = util.extractEmails(body.notification);
   let teamparsed = {};
   if (body.team) {
     const team = await db.teamModel.findOne({
@@ -39,7 +34,7 @@ module.exports = async function retrievefornotifications(ctx) {
       }]
     });
     if (!team) {
-      throw new Error('Invalid teamid');
+      throw util.createErrorMsg(400, 'teamid doesn\'t exists');
     }
     teamparsed = team.toJSON();
   }
@@ -66,7 +61,7 @@ module.exports = async function retrievefornotifications(ctx) {
   }
 
   if (emails.length === 0) {
-    throw new Error('no users exist to send the notification.');
+    throw util.createErrorMsg(400, 'no users exist to send the notification.');
   }
 
   ctx.response.body = JSON.stringify({ recipients: _.uniq(emails) });
