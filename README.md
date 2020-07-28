@@ -6,7 +6,7 @@ Please follow the below instructions to setup and run the API Server.
 
 2) Open mySQL Workbench and run the command 'create database userstories;'
 
-3)Then open the application root folder in a terminal and run the command 'npm i'. This will install all the dependency packages under node_modules foler.
+3)Then open the application root folder in a terminal and run the command 'npm i'. This will install all the dependency packages under node_modules folder.
 
 4)After successfully completed the above step, run 'npm run initusers'. This will seed the required data in DB.
 
